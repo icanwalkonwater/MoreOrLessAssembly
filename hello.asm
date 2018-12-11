@@ -1,7 +1,6 @@
 global main
 
 extern printf
-extern exit
 
 section .text			; code section
 

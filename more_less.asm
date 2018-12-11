@@ -44,11 +44,11 @@ ask_number:
 		xor eax, eax
 		call printf					; printf(format)
 
-		lea rsi, qword [rbp - 0x4]	; integer pointer
+		lea rsi, qword [rbp - 0x04]	; integer pointer
 		lea rdi, qword [prompt]		; format string
 		call scanf					; scanf(format, &pointer)
 
-		mov rax, qword [rbp - 0x4]	; return pointer
+		mov rax, qword [rbp - 0x04]	; return pointer
 
 		leave
 		ret
@@ -62,5 +62,5 @@ section .rodata
 	ask			db "Enter a number: ", 0x00
 	high		db "Too high", 0x0a, 0x00
 	low			db "Too low", 0x0a, 0x00
-	win			db "Hell yea", 0x0a, 0x00
+	win			db "Hell yeah", 0x0a, 0x00
 	prompt		db "%d", 0x00
