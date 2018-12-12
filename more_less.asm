@@ -1,7 +1,7 @@
 global main
 
-extern printf
-extern scanf
+extern printf, scanf
+extern open, read, close
 extern exit
 
 section .text
@@ -11,6 +11,8 @@ main:
 		push rbp
 		mov rbp, rsp
 		sub rsp, 0x10
+
+		call read_random
 
 sta		call ask_number
 		cmp eax, dword [number]
@@ -53,6 +55,30 @@ ask_number:
 		leave
 		ret
 
+read_random:
+		push rbp
+		mov rbp, rsp
+		sub rsp, 0x10
+
+		lea rdi, qword [dev_random]
+		xor eax, eax
+		call open
+		mov dword [rbp - 0x04], eax	; file descriptor at 0x04
+
+		mov edx, 1
+		lea rsi, qword [rbp - 0x08]
+		mov edi, dword [rbp - 0x04]
+		xor eax, eax
+		call read
+		movzx eax, byte [rbp - 0x08]
+		mov byte [number], al
+
+		mov edi, dword [rbp - 0x04]
+		call close
+
+		leave
+		ret
+
 section .data
 	number 		db 0x32
 
@@ -64,3 +90,5 @@ section .rodata
 	low			db "Too low", 0x0a, 0x00
 	win			db "Hell yeah", 0x0a, 0x00
 	prompt		db "%d", 0x00
+
+	dev_random	db "/dev/random", 0x00
