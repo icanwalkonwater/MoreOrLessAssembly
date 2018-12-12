@@ -72,19 +72,19 @@ read_random:
         mov edi, dword [rbp - 0x04] ; fd
         xor eax, eax
         call read
-        mov eax, dword [rbp - 0x08]; get random byte
+        mov eax, dword [rbp - 0x08] ; get random byte
 
         mov edi, eax
         call srand
 
         ; get random int % 0x64
-        call rand                 ; eax = random int
-        xor edx, edx              ; clear edx
-        mov ebx, 0x64             ; ebx = 100
-        div ebx                   ; edx:eax /= ebx
-        mov dword [number], edx   ; store the remainder
+        call rand                   ; eax = random int
+        xor edx, edx                ; clear edx
+        mov ebx, 0x64               ; ebx = 100
+        div ebx                     ; edx:eax /= ebx
+        mov dword [number], edx     ; store the remainder
 
-        ; close fdg
+        ; close fd
         mov edi, dword [rbp - 0x04]
         call close
 
